@@ -1,0 +1,25 @@
+version: 1
+uuid: php
+# 压缩文件规则
+filter_rule:
+  mode: 1
+  #  排除文件
+  exclude:
+    - '.git'
+#代码检出后执行
+hook_post_server:
+  - "composer update"
+#  - "composer dump-autoload"
+# 存储路径
+dst_repo: /data/deploy/php
+# 版本备份的数量最大值
+max_versions: 5
+#项目部署路径
+dst_dir: /data/wwwroot/php
+# 应用发布前执行
+hook_pre_host:
+  - ""
+#应用发布后执行
+hook_post_host:
+  - "chown -R www-data:www-data ."
+#  - "chmod 777 -R public/ storage/"
