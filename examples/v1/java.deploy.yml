@@ -1,0 +1,40 @@
+# wget --tries=3 https://repo.huaweicloud.com/java/jdk/8u202-b08/jdk-8u202-linux-x64.tar.gz
+# tar xf jdk-8u202-linux-x64.tar.gz -C /opt
+# https://archive.apache.org/dist/maven/maven-3/
+# wget --tries=3 https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
+# tar xf apache-maven-3.6.3-bin.tar.gz -C /opt/
+# /opt/apache-maven-3.6.3/conf/settings.xml
+#  <mirror>
+#  <id>aliyunmaven</id>
+#  <mirrorOf>*</mirrorOf>
+#  <name>阿里云公共仓库</name>
+#  <url>https://maven.aliyun.com/repository/public</url>
+#  </mirror>
+
+# export JAVA_HOME=/opt/jdk1.8.0_202
+# export PATH=$PATH:$JAVA_HOME/bin:/opt/apache-maven-3.6.3/bin
+
+version: 1
+uuid: java
+# 压缩文件规则
+filter_rule:
+  mode: 2
+  #  包含文件
+  include:
+    - 'ruoyi-admin.jar'
+#代码检出后执行
+hook_post_server:
+  - "mvn clean package -Dmaven.test.skip=true"
+  - "cp ruoyi-admin/target/ruoyi-admin.jar ."
+# 存储路径
+dst_repo: /data/deploy/java
+# 版本备份的数量最大值
+max_versions: 5
+#项目部署路径
+dst_dir: /data/wwwroot/java
+# 应用发布前执行
+hook_pre_host:
+  - "chmod +x ruoyi-admin.jar"
+#应用发布后执行
+hook_post_host:
+  - "supervisorctl restart java"

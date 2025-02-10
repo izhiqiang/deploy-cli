@@ -1,0 +1,26 @@
+version: 1
+uuid: golang
+# 压缩文件规则
+filter_rule:
+  mode: 2
+  #  包含文件
+  include:
+    - 'deploy'
+#代码检出后执行
+hook_post_server:
+  - "export PATH=$PATH:/opt/homebrew/opt/go/bin"
+  - "go env -w GO111MODULE=on"
+  - "go env -w GOPROXY=https://goproxy.cn,direct"
+  - "GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -a -o deploy main.go"
+# 存储路径
+dst_repo: /data/deploy/golang
+# 版本备份的数量最大值
+max_versions: 5
+#项目部署路径
+dst_dir: /data/wwwroot/golang
+# 应用发布前执行
+hook_pre_host:
+  - "chmod +x deploy"
+#应用发布后执行
+hook_post_host:
+#  - "supervisorctl restart deploy"
