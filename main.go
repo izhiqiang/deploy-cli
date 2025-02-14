@@ -7,6 +7,7 @@ import (
 )
 
 func main() {
+
 	if err := cobra.Execute(); err != nil {
 		logger.Error(err)
 		os.Exit(1)

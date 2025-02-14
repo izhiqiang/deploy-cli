@@ -3,6 +3,7 @@ package env
 import (
 	"os"
 	"path"
+	"runtime"
 )
 
 var HomeDir string
@@ -10,6 +11,7 @@ var HomeDir string
 const (
 	DEPLOY_HOSTS = "DEPLOY_HOSTS"
 	HOST_GROUP   = "HOST_GROUP"
+	Email        = "email"
 	Version      = "v0.0.x-dev"
 )
 
@@ -30,4 +32,13 @@ func Set(key string, value string) {
 // All get all environment variables
 func All() []string {
 	return os.Environ()
+}
+
+func GetEmail() string {
+	envMail := Get(Email)
+	if envMail == "" {
+		envMail = "deploy-cli@" + runtime.GOOS + ".com"
+		Set(Email, envMail)
+	}
+	return envMail
 }

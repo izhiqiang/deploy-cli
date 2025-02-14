@@ -5,6 +5,7 @@ import (
 	"deploy-cli/cobra/ping"
 	"deploy-cli/cobra/rollback"
 	"deploy-cli/cobra/run"
+	"deploy-cli/cobra/ssl"
 	"deploy-cli/env"
 	"deploy-cli/versions"
 	"github.com/spf13/cobra"
@@ -17,6 +18,7 @@ import (
 var originalWorkingDir = ""
 var continueVersionCommands = []string{
 	ping.Cmd.Use,
+	ssl.Cmd.Use,
 }
 var rootCmd = &cobra.Command{
 	Args:                  cobra.ArbitraryArgs,
@@ -84,6 +86,7 @@ func init() {
 	rootCmd.AddCommand(run.Cmd)
 	rootCmd.AddCommand(list.Cmd)
 	rootCmd.AddCommand(rollback.Cmd)
+	rootCmd.AddCommand(ssl.Cmd)
 }
 
 func Execute() error {
